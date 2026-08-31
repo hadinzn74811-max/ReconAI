@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings | ReconAI</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/settings.css') }}"
+    >
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-wave-square"></i>
+            </div>
+
+            <div>
+                <h1>ReconAI</h1>
+                <span>Payment Intelligence</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <p class="menu-label">Workspace</p>
+
+            <a href="{{ url_for('home') }}" class="nav-item">
+                <i class="fa-solid fa-table-cells-large"></i>
+                <span>Overview</span>
+            </a>
+
+            <a
+                href="{{ url_for('reconciliation_page') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Reconciliation</span>
+            </a>
+
+            <a
+                href="{{ url_for('transactions_page') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-money-check-dollar"></i>
+                <span>Transactions</span>
+            </a>
+
+            <a
+                href="{{ url_for('risk_detection_page') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Risk Detection</span>
+            </a>
+
+            <p class="menu-label">Management</p>
+
+            <a
+                href="{{ url_for('analytics_page') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Analytics</span>
+            </a>
+
+            <a
+                href="{{ url_for('reports_page') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-file-lines"></i>
+                <span>Reports</span>
+            </a>
+
+            <a
+                href="{{ url_for('settings_page') }}"
+                class="nav-item active"
+            >
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-profile">
+            <div class="profile-avatar">HN</div>
+
+            <div>
+                <strong>Hadi Nizam</strong>
+                <span>Administrator</span>
+            </div>
+
+            <i class="fa-solid fa-ellipsis"></i>
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Topbar -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button class="menu-button" id="menuButton">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <p>System configuration</p>
+                    <h2>Settings</h2>
+                </div>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="system-status">
+                    <span></span>
+                    Secure Configuration
+                </div>
+
+                <div class="current-time" id="currentTime"></div>
+
+                <button class="icon-button">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <section class="settings-page">
+
+            <!-- Heading -->
+            <div class="settings-heading">
+
+                <div>
+                    <span class="settings-label">
+                        <i class="fa-solid fa-sliders"></i>
+                        System preferences
+                    </span>
+
+                    <h1>Application Settings</h1>
+
+                    <p>
+                        Configure payment integrations, risk preferences
+                        and dashboard behaviour.
+                    </p>
+                </div>
+
+                <button
+                    class="primary-button"
+                    id="saveAllSettings"
+                >
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Save Settings
+                </button>
+
+            </div>
+
+
+            <!-- Integration Status -->
+            <section class="integration-status-card">
+
+                <div class="integration-brand">
+
+                    <div class="integration-logo">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+
+                    <div>
+                        <span>Payment integration</span>
+                        <h3>Razorpay Test Mode</h3>
+
+                        <p>
+                            Connect ReconAI with Razorpay test credentials.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div
+                    class="integration-state"
+                    id="integrationState"
+                >
+                    <i></i>
+                    Not configured
+                </div>
+
+            </section>
+
+
+            <section class="settings-grid">
+
+                <!-- Razorpay Configuration -->
+                <article class="settings-panel razorpay-panel">
+
+                    <div class="settings-panel-heading">
+
+                        <div class="settings-panel-icon purple">
+                            <i class="fa-solid fa-credit-card"></i>
+                        </div>
+
+                        <div>
+                            <h3>Razorpay Configuration</h3>
+
+                            <p>
+                                Test-mode API credentials for payment data.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="settings-form">
+
+                        <div class="settings-field">
+                            <label for="razorpayMode">
+                                Integration mode
+                            </label>
+
+                            <select id="razorpayMode">
+                                <option value="test">
+                                    Test Mode
+                                </option>
+
+                                <option value="demo">
+                                    ReconAI Demo Data
+                                </option>
+                            </select>
+                        </div>
+
+
+                        <div class="settings-field">
+                            <label for="razorpayKeyId">
+                                Razorpay Key ID
+                            </label>
+
+                            <div class="secure-input">
+                                <input
+                                    type="password"
+                                    id="razorpayKeyId"
+                                    placeholder="rzp_test_xxxxxxxxxx"
+                                    autocomplete="off"
+                                >
+
+                                <button
+                                    type="button"
+                                    class="toggle-secret"
+                                    data-target="razorpayKeyId"
+                                >
+                                    <i class="fa-regular fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+
+                        <div class="settings-field">
+                            <label for="razorpayKeySecret">
+                                Razorpay Key Secret
+                            </label>
+
+                            <div class="secure-input">
+                                <input
+                                    type="password"
+                                    id="razorpayKeySecret"
+                                    placeholder="Enter test key secret"
+                                    autocomplete="new-password"
+                                >
+
+                                <button
+                                    type="button"
+                                    class="toggle-secret"
+                                    data-target="razorpayKeySecret"
+                                >
+                                    <i class="fa-regular fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+
+                        <div class="settings-field">
+                            <label for="webhookSecret">
+                                Webhook Secret
+                                <span>Optional</span>
+                            </label>
+
+                            <div class="secure-input">
+                                <input
+                                    type="password"
+                                    id="webhookSecret"
+                                    placeholder="Enter webhook secret"
+                                    autocomplete="new-password"
+                                >
+
+                                <button
+                                    type="button"
+                                    class="toggle-secret"
+                                    data-target="webhookSecret"
+                                >
+                                    <i class="fa-regular fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+
+                        <div class="integration-actions">
+
+                            <button
+                                class="test-connection-button"
+                                id="testConnection"
+                            >
+                                <i class="fa-solid fa-plug-circle-check"></i>
+                                Test Connection
+                            </button>
+
+                            <span id="connectionMessage"></span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Risk Preferences -->
+                <article class="settings-panel">
+
+                    <div class="settings-panel-heading">
+
+                        <div class="settings-panel-icon orange">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+
+                        <div>
+                            <h3>Risk Preferences</h3>
+
+                            <p>
+                                Control ReconAI risk sensitivity.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="settings-form">
+
+                        <div class="settings-field">
+
+                            <div class="range-label">
+                                <label for="riskThreshold">
+                                    Risk alert threshold
+                                </label>
+
+                                <strong id="riskThresholdValue">
+                                    70%
+                                </strong>
+                            </div>
+
+                            <input
+                                type="range"
+                                id="riskThreshold"
+                                min="10"
+                                max="100"
+                                value="70"
+                                step="5"
+                            >
+
+                            <small>
+                                Payments above this score are flagged.
+                            </small>
+
+                        </div>
+
+
+                        <div class="settings-field">
+                            <label for="defaultCurrency">
+                                Default currency
+                            </label>
+
+                            <select id="defaultCurrency">
+                                <option value="INR">
+                                    INR — Indian Rupee
+                                </option>
+
+                                <option value="USD">
+                                    USD — US Dollar
+                                </option>
+                            </select>
+                        </div>
+
+
+                        <div class="settings-field">
+                            <label for="refreshInterval">
+                                Dashboard refresh interval
+                            </label>
+
+                            <select id="refreshInterval">
+                                <option value="15">
+                                    Every 15 seconds
+                                </option>
+
+                                <option value="30" selected>
+                                    Every 30 seconds
+                                </option>
+
+                                <option value="60">
+                                    Every 1 minute
+                                </option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Notifications -->
+                <article class="settings-panel">
+
+                    <div class="settings-panel-heading">
+
+                        <div class="settings-panel-icon cyan">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+
+                        <div>
+                            <h3>Notifications</h3>
+
+                            <p>
+                                Choose which alerts ReconAI displays.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="toggle-list">
+
+                        <label class="setting-toggle">
+
+                            <div>
+                                <strong>High-risk alerts</strong>
+
+                                <span>
+                                    Notify when suspicious activity is found.
+                                </span>
+                            </div>
+
+                            <input
+                                type="checkbox"
+                                id="riskNotifications"
+                                checked
+                            >
+
+                            <i></i>
+
+                        </label>
+
+
+                        <label class="setting-toggle">
+
+                            <div>
+                                <strong>Failed payment alerts</strong>
+
+                                <span>
+                                    Notify when payment capture fails.
+                                </span>
+                            </div>
+
+                            <input
+                                type="checkbox"
+                                id="failedNotifications"
+                                checked
+                            >
+
+                            <i></i>
+
+                        </label>
+
+
+                        <label class="setting-toggle">
+
+                            <div>
+                                <strong>Reconciliation reports</strong>
+
+                                <span>
+                                    Notify when a report is generated.
+                                </span>
+                            </div>
+
+                            <input
+                                type="checkbox"
+                                id="reportNotifications"
+                                checked
+                            >
+
+                            <i></i>
+
+                        </label>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- Security Notice -->
+            <section class="security-notice">
+
+                <i class="fa-solid fa-lock"></i>
+
+                <div>
+                    <strong>Keep API credentials private</strong>
+
+                    <p>
+                        Use Razorpay test-mode keys during development.
+                        Never share key secrets in screenshots, chat or
+                        public repositories.
+                    </p>
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script
+    src="{{ url_for('static', filename='js/settings.js') }}"
+></script>
+
+</body>
+</html>

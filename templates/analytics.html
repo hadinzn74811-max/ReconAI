@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics | ReconAI</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/analytics.css') }}"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-wave-square"></i>
+            </div>
+
+            <div>
+                <h1>ReconAI</h1>
+                <span>Payment Intelligence</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <p class="menu-label">Workspace</p>
+
+            <a href="{{ url_for('home') }}" class="nav-item">
+                <i class="fa-solid fa-table-cells-large"></i>
+                <span>Overview</span>
+            </a>
+
+            <a
+                href="{{ url_for('reconciliation_page') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Reconciliation</span>
+            </a>
+
+            <a
+                href="{{ url_for('transactions_page') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-money-check-dollar"></i>
+                <span>Transactions</span>
+            </a>
+
+            <a
+                href="{{ url_for('risk_detection_page') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Risk Detection</span>
+            </a>
+
+            <p class="menu-label">Management</p>
+
+            <a
+                href="{{ url_for('analytics_page') }}"
+                class="nav-item active"
+            >
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Analytics</span>
+            </a>
+
+            <a
+    href="{{ url_for('reports_page') }}"
+    class="nav-item"
+>
+    <i class="fa-solid fa-file-lines"></i>
+    <span>Reports</span>
+</a>
+
+            <a href="{{ url_for('settings_page') }}" class="nav-item">
+    <i class="fa-solid fa-gear"></i>
+    <span>Settings</span>
+</a>
+        </nav>
+
+        <div class="sidebar-profile">
+            <div class="profile-avatar">HN</div>
+
+            <div>
+                <strong>Hadi Nizam</strong>
+                <span>Administrator</span>
+            </div>
+
+            <i class="fa-solid fa-ellipsis"></i>
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Topbar -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button class="menu-button" id="menuButton">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <p>Payment intelligence</p>
+                    <h2>Analytics</h2>
+                </div>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="system-status">
+                    <span></span>
+                    Analytics Online
+                </div>
+
+                <div class="current-time" id="currentTime"></div>
+
+                <button class="icon-button">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <section class="analytics-page">
+
+            <!-- Heading -->
+            <div class="analytics-heading">
+
+                <div>
+                    <span class="analytics-label">
+                        <i class="fa-solid fa-chart-simple"></i>
+                        Data intelligence
+                    </span>
+
+                    <h1>Payment Analytics</h1>
+
+                    <p>
+                        Understand payment performance, transaction volume
+                        and customer activity.
+                    </p>
+                </div>
+
+                <button
+                    class="primary-button"
+                    id="refreshAnalytics"
+                >
+                    <i class="fa-solid fa-rotate"></i>
+                    Refresh Analytics
+                </button>
+
+            </div>
+
+
+            <!-- KPIs -->
+            <section class="analytics-kpi-grid">
+
+                <article class="analytics-kpi-card">
+                    <div class="analytics-kpi-icon purple">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                    </div>
+
+                    <span>Total payment volume</span>
+                    <strong id="analyticsTotalVolume">₹0</strong>
+                    <small>Current transaction dataset</small>
+                </article>
+
+                <article class="analytics-kpi-card">
+                    <div class="analytics-kpi-icon green">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                    </div>
+
+                    <span>Payment success rate</span>
+                    <strong id="analyticsSuccessRate">0%</strong>
+                    <small>Captured transactions</small>
+                </article>
+
+                <article class="analytics-kpi-card">
+                    <div class="analytics-kpi-icon cyan">
+                        <i class="fa-solid fa-receipt"></i>
+                    </div>
+
+                    <span>Average payment</span>
+                    <strong id="analyticsAveragePayment">₹0</strong>
+                    <small>Average transaction value</small>
+                </article>
+
+                <article class="analytics-kpi-card">
+                    <div class="analytics-kpi-icon orange">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+
+                    <span>High-risk rate</span>
+                    <strong id="analyticsRiskRate">0%</strong>
+                    <small>Payments requiring review</small>
+                </article>
+
+            </section>
+
+
+            <!-- Main Charts -->
+            <section class="analytics-main-grid">
+
+                <article class="analytics-panel volume-panel">
+
+                    <div class="analytics-panel-heading">
+
+                        <div>
+                            <p>Payment performance</p>
+                            <h3>Transaction Volume</h3>
+                        </div>
+
+                        <span class="analytics-badge">
+                            Current dataset
+                        </span>
+
+                    </div>
+
+                    <div class="analytics-chart large">
+                        <canvas id="analyticsVolumeChart"></canvas>
+                    </div>
+
+                </article>
+
+
+                <article class="analytics-panel">
+
+                    <div class="analytics-panel-heading">
+
+                        <div>
+                            <p>Payment outcomes</p>
+                            <h3>Status Distribution</h3>
+                        </div>
+
+                    </div>
+
+                    <div class="analytics-chart">
+                        <canvas id="analyticsStatusChart"></canvas>
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- Secondary Analytics -->
+            <section class="analytics-secondary-grid">
+
+                <article class="analytics-panel">
+
+                    <div class="analytics-panel-heading">
+
+                        <div>
+                            <p>Security intelligence</p>
+                            <h3>Risk Distribution</h3>
+                        </div>
+
+                    </div>
+
+                    <div class="analytics-chart">
+                        <canvas id="analyticsRiskChart"></canvas>
+                    </div>
+
+                </article>
+
+
+                <article class="analytics-panel health-panel">
+
+                    <div class="analytics-panel-heading">
+
+                        <div>
+                            <p>Operational overview</p>
+                            <h3>Payment Health</h3>
+                        </div>
+
+                    </div>
+
+                    <div class="health-list">
+
+                        <div class="health-item">
+
+                            <div class="health-label">
+                                <span>Captured payments</span>
+                                <strong id="capturedHealthValue">0%</strong>
+                            </div>
+
+                            <div class="health-progress">
+                                <span
+                                    class="captured"
+                                    id="capturedHealthBar"
+                                ></span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="health-item">
+
+                            <div class="health-label">
+                                <span>Failed payments</span>
+                                <strong id="failedHealthValue">0%</strong>
+                            </div>
+
+                            <div class="health-progress">
+                                <span
+                                    class="failed"
+                                    id="failedHealthBar"
+                                ></span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="health-item">
+
+                            <div class="health-label">
+                                <span>High-risk payments</span>
+                                <strong id="riskHealthValue">0%</strong>
+                            </div>
+
+                            <div class="health-progress">
+                                <span
+                                    class="risk"
+                                    id="riskHealthBar"
+                                ></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="analytics-insight" id="analyticsInsight">
+                        Loading payment intelligence...
+                    </div>
+
+                </article>
+
+
+                <article class="analytics-panel customer-panel">
+
+                    <div class="analytics-panel-heading">
+
+                        <div>
+                            <p>Customer intelligence</p>
+                            <h3>Top Customers</h3>
+                        </div>
+
+                    </div>
+
+                    <div class="customer-list" id="topCustomersList"></div>
+
+                </article>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script
+    src="{{ url_for('static', filename='js/analytics.js') }}"
+></script>
+
+</body>
+</html>

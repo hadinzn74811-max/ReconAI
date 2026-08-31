@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ReconAI | Payment Intelligence</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-wave-square"></i>
+            </div>
+
+            <div>
+                <h1>ReconAI</h1>
+                <span>Payment Intelligence</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <p class="menu-label">Workspace</p>
+<a
+    href="{{ url_for('home') }}"
+    class="nav-item active"
+>
+    <i class="fa-solid fa-table-cells-large"></i>
+    <span>Overview</span>
+</a>
+
+<a
+    href="{{ url_for('reconciliation_page') }}"
+    class="nav-item"
+>
+    <i class="fa-solid fa-arrows-rotate"></i>
+    <span>Reconciliation</span>
+</a>
+
+            <a
+    href="{{ url_for('transactions_page') }}"
+    class="nav-item"
+>
+    <i class="fa-solid fa-money-check-dollar"></i>
+    <span>Transactions</span>
+</a>
+
+            <a
+    href="{{ url_for('risk_detection_page') }}"
+    class="nav-item"
+>
+    <i class="fa-solid fa-shield-halved"></i>
+    <span>Risk Detection</span>
+</a>
+            <p class="menu-label">Management</p>
+
+           <a
+    href="{{ url_for('analytics_page') }}"
+    class="nav-item"
+>
+    <i class="fa-solid fa-chart-line"></i>
+    <span>Analytics</span>
+</a>
+            <a
+    href="{{ url_for('reports_page') }}"
+    class="nav-item"
+>
+    <i class="fa-solid fa-file-lines"></i>
+    <span>Reports</span>
+</a>
+
+            <a href="{{ url_for('settings_page') }}" class="nav-item">
+    <i class="fa-solid fa-gear"></i>
+    <span>Settings</span>
+</a>
+        </nav>
+
+        <div class="sidebar-profile">
+            <div class="profile-avatar">HN</div>
+
+            <div>
+                <strong>Hadi Nizam</strong>
+                <span>Administrator</span>
+            </div>
+
+            <i class="fa-solid fa-ellipsis"></i>
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Topbar -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+                <button class="menu-button" id="menuButton">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <p>Welcome back</p>
+                    <h2>Payment Overview</h2>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="system-status">
+                    <span></span>
+                    System Operational
+                </div>
+
+                <div class="current-time" id="currentTime"></div>
+
+                <button class="icon-button">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <section class="dashboard-content">
+
+            <!-- Hero -->
+            <section class="hero-card">
+
+                <div class="hero-content">
+                    <span class="hero-tag">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        AI-powered reconciliation
+                    </span>
+
+                    <h2>Every payment accounted for.</h2>
+
+                    <p>
+                        Automatically match settlements, detect anomalies and
+                        resolve payment mismatches with ReconAI.
+                    </p>
+
+                    <button class="primary-button" id="runReconciliation">
+                        <i class="fa-solid fa-bolt"></i>
+                        Run Reconciliation
+                    </button>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="ai-core">
+                        <div class="core-ring ring-one"></div>
+                        <div class="core-ring ring-two"></div>
+
+                        <div class="core-center">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- Metrics -->
+            <section class="metrics-grid">
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <div class="metric-icon purple">
+                            <i class="fa-solid fa-indian-rupee-sign"></i>
+                        </div>
+                        <span class="metric-change positive">+12.4%</span>
+                    </div>
+
+                    <p>Total processed</p>
+                    <h3 id="totalAmount">₹0</h3>
+                    <span>Across all transactions</span>
+                </article>
+
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <div class="metric-icon green">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <span class="metric-change positive">+8.2%</span>
+                    </div>
+
+                    <p>Successful payments</p>
+                    <h3 id="successfulPayments">0</h3>
+                    <span>Captured successfully</span>
+                </article>
+
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <div class="metric-icon red">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </div>
+                        <span class="metric-change negative">Needs review</span>
+                    </div>
+
+                    <p>Failed payments</p>
+                    <h3 id="failedPayments">0</h3>
+                    <span>Require reconciliation</span>
+                </article>
+
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <div class="metric-icon orange">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <span class="metric-change warning">AI detected</span>
+                    </div>
+
+                    <p>High-risk activity</p>
+                    <h3 id="highRiskTransactions">0</h3>
+                    <span>Suspicious transactions</span>
+                </article>
+
+            </section>
+
+
+            <!-- Analytics -->
+            <section class="analytics-grid">
+
+                <article class="panel chart-panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <p>Payment performance</p>
+                            <h3>Transaction Analytics</h3>
+                        </div>
+
+                        <select id="chartRange">
+                            <option value="7">Last 7 days</option>
+                            <option value="30">Last 30 days</option>
+                        </select>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="paymentChart"></canvas>
+                    </div>
+
+                </article>
+
+
+                <article class="panel insight-panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <p>Live intelligence</p>
+                            <h3>AI Risk Insights</h3>
+                        </div>
+
+                        <div class="ai-badge">AI</div>
+                    </div>
+
+                    <div class="insight-list">
+
+                        <div class="insight-item high">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                            <div>
+                                <strong>Unusual payment detected</strong>
+                                <p>₹12,999 transaction requires verification.</p>
+                            </div>
+                        </div>
+
+                        <div class="insight-item medium">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+
+                            <div>
+                                <strong>Settlement delay</strong>
+                                <p>One payment is awaiting reconciliation.</p>
+                            </div>
+                        </div>
+
+                        <div class="insight-item safe">
+                            <i class="fa-solid fa-shield-check"></i>
+
+                            <div>
+                                <strong>System health is excellent</strong>
+                                <p>No service disruptions detected.</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- Transactions -->
+            <section class="panel transaction-panel">
+
+                <div class="panel-heading">
+                    <div>
+                        <p>Real-time payment activity</p>
+                        <h3>Recent Transactions</h3>
+                    </div>
+
+                    <button class="secondary-button">
+                        View all
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Payment ID</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Risk level</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="transactionTable"></tbody>
+                    </table>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</div>
+
+<!-- Reconciliation Result Modal -->
+<div class="modal-overlay" id="reconciliationModal">
+
+    <div class="reconciliation-modal">
+
+        <div class="modal-header">
+            <div>
+                <span class="modal-label">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    AI reconciliation report
+                </span>
+
+                <h2>Reconciliation Results</h2>
+
+                <p>
+                    ReconAI compared your orders with payment records.
+                </p>
+            </div>
+
+            <button class="modal-close" id="closeModal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+
+        <div class="reconciliation-summary">
+
+            <div class="recon-summary-card">
+                <span>Total checked</span>
+                <strong id="reconTotal">0</strong>
+            </div>
+
+            <div class="recon-summary-card matched">
+                <span>Matched</span>
+                <strong id="reconMatched">0</strong>
+            </div>
+
+            <div class="recon-summary-card issue">
+                <span>Issues found</span>
+                <strong id="reconIssues">0</strong>
+            </div>
+
+            <div class="recon-summary-card risk">
+                <span>High risk</span>
+                <strong id="reconHighRisk">0</strong>
+            </div>
+
+        </div>
+
+
+        <div class="reconciliation-table-wrapper">
+
+            <table class="reconciliation-table">
+
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Payment</th>
+                        <th>Customer</th>
+                        <th>Expected</th>
+                        <th>Paid</th>
+                        <th>Result</th>
+                        <th>Issue</th>
+                    </tr>
+                </thead>
+
+                <tbody id="reconciliationTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check"></i>
+
+    <div>
+        <strong>Reconciliation started</strong>
+        <span>ReconAI is analysing your payments.</span>
+    </div>
+</div>
+
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+</html>

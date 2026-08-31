@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Risk Detection | ReconAI</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/risk-detection.css') }}"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-wave-square"></i>
+            </div>
+
+            <div>
+                <h1>ReconAI</h1>
+                <span>Payment Intelligence</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <p class="menu-label">Workspace</p>
+
+            <a
+                href="{{ url_for('home') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-table-cells-large"></i>
+                <span>Overview</span>
+            </a>
+
+            <a
+                href="{{ url_for('reconciliation_page') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Reconciliation</span>
+            </a>
+
+            <a
+                href="{{ url_for('transactions_page') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-money-check-dollar"></i>
+                <span>Transactions</span>
+            </a>
+
+            <a
+                href="{{ url_for('risk_detection_page') }}"
+                class="nav-item active"
+            >
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Risk Detection</span>
+            </a>
+
+            <p class="menu-label">Management</p>
+
+            <a
+    href="{{ url_for('analytics_page') }}"
+    class="nav-item"
+>
+    <i class="fa-solid fa-chart-line"></i>
+    <span>Analytics</span>
+</a>
+
+            <a
+    href="{{ url_for('reports_page') }}"
+    class="nav-item"
+>
+    <i class="fa-solid fa-file-lines"></i>
+    <span>Reports</span>
+</a>
+
+           <a href="{{ url_for('settings_page') }}" class="nav-item">
+    <i class="fa-solid fa-gear"></i>
+    <span>Settings</span>
+</a>
+        </nav>
+
+        <div class="sidebar-profile">
+            <div class="profile-avatar">HN</div>
+
+            <div>
+                <strong>Hadi Nizam</strong>
+                <span>Administrator</span>
+            </div>
+
+            <i class="fa-solid fa-ellipsis"></i>
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Topbar -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button class="menu-button" id="menuButton">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <p>AI fraud intelligence</p>
+                    <h2>Risk Detection</h2>
+                </div>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="system-status">
+                    <span></span>
+                    AI Monitor Active
+                </div>
+
+                <div class="current-time" id="currentTime"></div>
+
+                <button class="icon-button">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <section class="risk-page">
+
+            <!-- Heading -->
+            <div class="risk-heading">
+
+                <div>
+                    <span class="risk-label">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        Intelligent protection
+                    </span>
+
+                    <h1>Payment Risk Monitor</h1>
+
+                    <p>
+                        Detect suspicious payments, unusual amounts and
+                        reconciliation anomalies using ReconAI.
+                    </p>
+                </div>
+
+                <button
+                    class="primary-button"
+                    id="scanRiskButton"
+                >
+                    <i class="fa-solid fa-radar"></i>
+                    Scan Transactions
+                </button>
+
+            </div>
+
+
+            <!-- Summary -->
+            <section class="risk-summary-grid">
+
+                <article class="risk-summary-card">
+                    <div class="risk-summary-icon red">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+
+                    <div>
+                        <span>High-risk alerts</span>
+                        <strong id="highRiskCount">0</strong>
+                        <small>Require verification</small>
+                    </div>
+                </article>
+
+                <article class="risk-summary-card">
+                    <div class="risk-summary-icon orange">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                    </div>
+
+                    <div>
+                        <span>Amount at risk</span>
+                        <strong id="amountAtRisk">₹0</strong>
+                        <small>Across flagged payments</small>
+                    </div>
+                </article>
+
+                <article class="risk-summary-card">
+                    <div class="risk-summary-icon purple">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+
+                    <div>
+                        <span>Needs review</span>
+                        <strong id="needsReviewCount">0</strong>
+                        <small>Anomalies detected</small>
+                    </div>
+                </article>
+
+                <article class="risk-summary-card">
+                    <div class="risk-summary-icon green">
+                        <i class="fa-solid fa-shield"></i>
+                    </div>
+
+                    <div>
+                        <span>Security score</span>
+                        <strong id="securityScore">100</strong>
+                        <small>Out of 100</small>
+                    </div>
+                </article>
+
+            </section>
+
+
+            <!-- Intelligence -->
+            <section class="risk-intelligence-grid">
+
+                <article class="risk-chart-panel">
+
+                    <div class="risk-panel-heading">
+                        <div>
+                            <p>Current dataset</p>
+                            <h3>Risk Distribution</h3>
+                        </div>
+
+                        <span class="risk-live-badge">
+                            <i></i>
+                            Live analysis
+                        </span>
+                    </div>
+
+                    <div class="risk-chart-container">
+                        <canvas id="riskDistributionChart"></canvas>
+                    </div>
+
+                </article>
+
+
+                <article class="ai-risk-panel">
+
+                    <div class="risk-panel-heading">
+                        <div>
+                            <p>ReconAI intelligence</p>
+                            <h3>AI Risk Assessment</h3>
+                        </div>
+
+                        <div class="risk-ai-icon">AI</div>
+                    </div>
+
+                    <div class="risk-score-ring">
+                        <div>
+                            <strong id="riskScoreValue">0%</strong>
+                            <span>Risk exposure</span>
+                        </div>
+                    </div>
+
+                    <div class="ai-risk-message" id="aiRiskMessage">
+                        Run a transaction scan to generate an AI assessment.
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- Alerts Table -->
+            <section class="risk-alerts-panel">
+
+                <div class="risk-panel-heading">
+                    <div>
+                        <p>Detected anomalies</p>
+                        <h3>Risk Alerts</h3>
+                    </div>
+
+                    <div class="risk-scan-status" id="riskScanStatus">
+                        <span></span>
+                        Waiting for scan
+                    </div>
+                </div>
+
+                <div class="risk-empty-state" id="riskEmptyState">
+                    <i class="fa-solid fa-shield-circle-check"></i>
+
+                    <h3>No scan results yet</h3>
+
+                    <p>
+                        Click “Scan Transactions” to detect suspicious
+                        payment activity.
+                    </p>
+                </div>
+
+                <div
+                    class="risk-table-wrapper"
+                    id="riskTableWrapper"
+                    hidden
+                >
+
+                    <table class="risk-alerts-table">
+
+                        <thead>
+                            <tr>
+                                <th>Payment</th>
+                                <th>Order</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Risk</th>
+                                <th>Severity</th>
+                                <th>Reason</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="riskAlertsTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script
+    src="{{ url_for('static', filename='js/risk-detection.js') }}"
+></script>
+
+</body>
+</html>

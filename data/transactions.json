@@ -1,0 +1,82 @@
+{
+    "orders": [
+        {
+            "order_id": "ORD-1001",
+            "customer": "Aarav Sharma",
+            "expected_amount": 2499,
+            "date": "30 Aug 2026"
+        },
+        {
+            "order_id": "ORD-1002",
+            "customer": "Priya Singh",
+            "expected_amount": 5999,
+            "date": "30 Aug 2026"
+        },
+        {
+            "order_id": "ORD-1003",
+            "customer": "Rahul Verma",
+            "expected_amount": 12999,
+            "date": "29 Aug 2026"
+        },
+        {
+            "order_id": "ORD-1004",
+            "customer": "Neha Kumari",
+            "expected_amount": 3499,
+            "date": "29 Aug 2026"
+        },
+        {
+            "order_id": "ORD-1005",
+            "customer": "Aditya Raj",
+            "expected_amount": 1999,
+            "date": "28 Aug 2026"
+        }
+    ],
+
+    "payments": [
+        {
+            "id": "pay_RCN1001",
+            "order_id": "ORD-1001",
+            "customer": "Aarav Sharma",
+            "amount": 2499,
+            "status": "captured",
+            "risk": "low",
+            "date": "30 Aug 2026"
+        },
+        {
+            "id": "pay_RCN1002",
+            "order_id": "ORD-1002",
+            "customer": "Priya Singh",
+            "amount": 4999,
+            "status": "captured",
+            "risk": "medium",
+            "date": "30 Aug 2026"
+        },
+        {
+            "id": "pay_RCN1003",
+            "order_id": "ORD-1003",
+            "customer": "Rahul Verma",
+            "amount": 12999,
+            "status": "captured",
+            "risk": "high",
+            "date": "29 Aug 2026"
+        },
+        {
+            "id": "pay_RCN1004",
+            "order_id": "ORD-1004",
+            "customer": "Neha Kumari",
+            "amount": 3499,
+            "status": "failed",
+            "risk": "low",
+            "date": "29 Aug 2026"
+        },
+        {
+            "id": "pay_RCN1006",
+            "order_id": "ORD-9999",
+            "customer": "Unknown Customer",
+            "amount": 7999,
+            "status": "captured",
+            "risk": "high",
+            "date": "28 Aug 2026"
+        }
+    ]
+}

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Transactions | ReconAI</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/transactions.css') }}"
+    >
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-wave-square"></i>
+            </div>
+
+            <div>
+                <h1>ReconAI</h1>
+                <span>Payment Intelligence</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <p class="menu-label">Workspace</p>
+
+            <a
+                href="{{ url_for('home') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-table-cells-large"></i>
+                <span>Overview</span>
+            </a>
+
+            <a
+                href="{{ url_for('reconciliation_page') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Reconciliation</span>
+            </a>
+
+            <a
+                href="{{ url_for('transactions_page') }}"
+                class="nav-item active"
+            >
+                <i class="fa-solid fa-money-check-dollar"></i>
+                <span>Transactions</span>
+            </a>
+
+            <a
+    href="{{ url_for('risk_detection_page') }}"
+    class="nav-item"
+>
+    <i class="fa-solid fa-shield-halved"></i>
+    <span>Risk Detection</span>
+</a>
+            <p class="menu-label">Management</p>
+
+            <a
+    href="{{ url_for('analytics_page') }}"
+    class="nav-item"
+>
+    <i class="fa-solid fa-chart-line"></i>
+    <span>Analytics</span>
+</a>
+           <a
+    href="{{ url_for('reports_page') }}"
+    class="nav-item"
+>
+    <i class="fa-solid fa-file-lines"></i>
+    <span>Reports</span>
+</a>
+
+           <a href="{{ url_for('settings_page') }}" class="nav-item">
+    <i class="fa-solid fa-gear"></i>
+    <span>Settings</span>
+</a>
+        </nav>
+
+        <div class="sidebar-profile">
+            <div class="profile-avatar">HN</div>
+
+            <div>
+                <strong>Hadi Nizam</strong>
+                <span>Administrator</span>
+            </div>
+
+            <i class="fa-solid fa-ellipsis"></i>
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Topbar -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button class="menu-button" id="menuButton">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <p>Payment operations</p>
+                    <h2>Transactions</h2>
+                </div>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="system-status">
+                    <span></span>
+                    Live Data
+                </div>
+
+                <div class="current-time" id="currentTime"></div>
+
+                <button class="icon-button">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <section class="transactions-page">
+
+            <!-- Heading -->
+            <div class="transactions-heading">
+
+                <div>
+                    <span class="transactions-label">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                        Payment activity
+                    </span>
+
+                    <h1>All Transactions</h1>
+
+                    <p>
+                        Search, filter and inspect every payment processed
+                        by ReconAI.
+                    </p>
+                </div>
+
+                <button
+                    class="primary-button"
+                    id="exportTransactions"
+                >
+                    <i class="fa-solid fa-download"></i>
+                    Export CSV
+                </button>
+
+            </div>
+
+
+            <!-- Summary -->
+            <section class="transaction-summary-grid">
+
+                <article class="transaction-summary-card">
+                    <div class="summary-icon purple">
+                        <i class="fa-solid fa-receipt"></i>
+                    </div>
+
+                    <div>
+                        <span>Total transactions</span>
+                        <strong id="transactionCount">0</strong>
+                    </div>
+                </article>
+
+                <article class="transaction-summary-card">
+                    <div class="summary-icon green">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+
+                    <div>
+                        <span>Captured</span>
+                        <strong id="capturedCount">0</strong>
+                    </div>
+                </article>
+
+                <article class="transaction-summary-card">
+                    <div class="summary-icon red">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    </div>
+
+                    <div>
+                        <span>Failed</span>
+                        <strong id="failedCount">0</strong>
+                    </div>
+                </article>
+
+                <article class="transaction-summary-card">
+                    <div class="summary-icon cyan">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                    </div>
+
+                    <div>
+                        <span>Total volume</span>
+                        <strong id="transactionVolume">₹0</strong>
+                    </div>
+                </article>
+
+            </section>
+
+
+            <!-- Transactions Panel -->
+            <section class="transactions-panel">
+
+                <div class="transaction-toolbar">
+
+                    <div class="transaction-search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="search"
+                            id="transactionSearch"
+                            placeholder="Search payment, order or customer..."
+                        >
+                    </div>
+
+                    <div class="transaction-filters">
+
+                        <select id="statusFilter">
+                            <option value="all">All statuses</option>
+                            <option value="captured">Captured</option>
+                            <option value="failed">Failed</option>
+                            <option value="pending">Pending</option>
+                        </select>
+
+                        <select id="riskFilter">
+                            <option value="all">All risk levels</option>
+                            <option value="low">Low risk</option>
+                            <option value="medium">Medium risk</option>
+                            <option value="high">High risk</option>
+                        </select>
+
+                        <button
+                            class="refresh-button"
+                            id="refreshTransactions"
+                            title="Refresh transactions"
+                        >
+                            <i class="fa-solid fa-rotate"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="transaction-result-info">
+
+                    <span id="visibleTransactionCount">
+                        Showing 0 transactions
+                    </span>
+
+                    <span class="live-indicator">
+                        <i></i>
+                        Live
+                    </span>
+
+                </div>
+
+
+                <div class="transactions-table-wrapper">
+
+                    <table class="transactions-table">
+
+                        <thead>
+                            <tr>
+                                <th>Payment ID</th>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Risk</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="transactionsPageTable"></tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div class="transactions-empty" id="transactionsEmpty" hidden>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <h3>No transactions found</h3>
+
+                    <p>Try changing your search or filters.</p>
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- Transaction Details Drawer -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<aside class="transaction-drawer" id="transactionDrawer">
+
+    <div class="drawer-header">
+
+        <div>
+            <span>Transaction details</span>
+            <h2 id="drawerPaymentId">Payment</h2>
+        </div>
+
+        <button id="closeDrawer">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+    </div>
+
+    <div class="drawer-content" id="drawerContent"></div>
+
+</aside>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script
+    src="{{ url_for('static', filename='js/transactions.js') }}"
+></script>
+
+</body>
+</html>

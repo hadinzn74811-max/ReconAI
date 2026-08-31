@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports | ReconAI</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/reports.css') }}"
+    >
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-wave-square"></i>
+            </div>
+
+            <div>
+                <h1>ReconAI</h1>
+                <span>Payment Intelligence</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <p class="menu-label">Workspace</p>
+
+            <a href="{{ url_for('home') }}" class="nav-item">
+                <i class="fa-solid fa-table-cells-large"></i>
+                <span>Overview</span>
+            </a>
+
+            <a
+                href="{{ url_for('reconciliation_page') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Reconciliation</span>
+            </a>
+
+            <a
+                href="{{ url_for('transactions_page') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-money-check-dollar"></i>
+                <span>Transactions</span>
+            </a>
+
+            <a
+                href="{{ url_for('risk_detection_page') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Risk Detection</span>
+            </a>
+
+            <p class="menu-label">Management</p>
+
+            <a
+                href="{{ url_for('analytics_page') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Analytics</span>
+            </a>
+
+            <a
+                href="{{ url_for('reports_page') }}"
+                class="nav-item active"
+            >
+                <i class="fa-solid fa-file-lines"></i>
+                <span>Reports</span>
+            </a>
+
+            <a href="{{ url_for('settings_page') }}" class="nav-item">
+    <i class="fa-solid fa-gear"></i>
+    <span>Settings</span>
+</a>
+        </nav>
+
+        <div class="sidebar-profile">
+            <div class="profile-avatar">HN</div>
+
+            <div>
+                <strong>Hadi Nizam</strong>
+                <span>Administrator</span>
+            </div>
+
+            <i class="fa-solid fa-ellipsis"></i>
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Topbar -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button class="menu-button" id="menuButton">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <p>Business intelligence</p>
+                    <h2>Reports</h2>
+                </div>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="system-status">
+                    <span></span>
+                    Reports Ready
+                </div>
+
+                <div class="current-time" id="currentTime"></div>
+
+                <button class="icon-button">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <section class="reports-page">
+
+            <!-- Heading -->
+            <div class="reports-heading">
+
+                <div>
+                    <span class="reports-label">
+                        <i class="fa-solid fa-file-export"></i>
+                        Business reporting
+                    </span>
+
+                    <h1>Reports & Exports</h1>
+
+                    <p>
+                        Generate transaction and reconciliation reports
+                        for analysis, auditing and presentation.
+                    </p>
+                </div>
+
+                <button
+                    class="primary-button"
+                    id="generateReportButton"
+                >
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    Generate Report
+                </button>
+
+            </div>
+
+
+            <!-- Summary -->
+            <section class="report-summary-grid">
+
+                <article class="report-summary-card">
+                    <div class="report-summary-icon purple">
+                        <i class="fa-solid fa-receipt"></i>
+                    </div>
+
+                    <div>
+                        <span>Total transactions</span>
+                        <strong id="reportTransactionCount">0</strong>
+                        <small>Payment records analysed</small>
+                    </div>
+                </article>
+
+                <article class="report-summary-card">
+                    <div class="report-summary-icon cyan">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                    </div>
+
+                    <div>
+                        <span>Total volume</span>
+                        <strong id="reportTotalVolume">₹0</strong>
+                        <small>Combined payment value</small>
+                    </div>
+                </article>
+
+                <article class="report-summary-card">
+                    <div class="report-summary-icon red">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+
+                    <div>
+                        <span>Issues detected</span>
+                        <strong id="reportIssueCount">0</strong>
+                        <small>Require investigation</small>
+                    </div>
+                </article>
+
+                <article class="report-summary-card">
+                    <div class="report-summary-icon green">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+
+                    <div>
+                        <span>Matched payments</span>
+                        <strong id="reportMatchedCount">0</strong>
+                        <small>Successfully reconciled</small>
+                    </div>
+                </article>
+
+            </section>
+
+
+            <!-- Report Builder -->
+            <section class="report-builder-grid">
+
+                <article class="report-builder-panel">
+
+                    <div class="report-panel-heading">
+
+                        <div>
+                            <p>Configure export</p>
+                            <h3>Report Builder</h3>
+                        </div>
+
+                        <div class="builder-icon">
+                            <i class="fa-solid fa-sliders"></i>
+                        </div>
+
+                    </div>
+
+
+                    <div class="report-form">
+
+                        <div class="report-field">
+                            <label for="reportType">Report type</label>
+
+                            <select id="reportType">
+                                <option value="transactions">
+                                    Transaction Report
+                                </option>
+
+                                <option value="reconciliation">
+                                    Reconciliation Report
+                                </option>
+
+                                <option value="risk">
+                                    Risk Detection Report
+                                </option>
+                            </select>
+                        </div>
+
+
+                        <div class="report-field">
+                            <label for="reportFormat">Export format</label>
+
+                            <select id="reportFormat">
+                                <option value="csv">CSV File</option>
+                                <option value="json">JSON File</option>
+                                <option value="print">Printable Report</option>
+                            </select>
+                        </div>
+
+
+                        <div class="report-field">
+                            <label for="reportName">Report name</label>
+
+                            <input
+                                type="text"
+                                id="reportName"
+                                value="ReconAI Payment Report"
+                                maxlength="60"
+                            >
+                        </div>
+
+
+                        <button
+                            class="report-create-button"
+                            id="createReportButton"
+                        >
+                            <i class="fa-solid fa-file-circle-plus"></i>
+                            Create Report
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Preview -->
+                <article class="report-preview-panel">
+
+                    <div class="report-panel-heading">
+
+                        <div>
+                            <p>Generated document</p>
+                            <h3>Report Preview</h3>
+                        </div>
+
+                        <span class="preview-status" id="previewStatus">
+                            <i></i>
+                            Waiting
+                        </span>
+
+                    </div>
+
+
+                    <div class="report-empty-preview" id="reportEmptyPreview">
+
+                        <i class="fa-solid fa-file-circle-check"></i>
+
+                        <h3>Ready to generate</h3>
+
+                        <p>
+                            Select a report type and format, then click
+                            “Create Report”.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="generated-report-preview"
+                        id="generatedReportPreview"
+                        hidden
+                    >
+
+                        <div class="preview-document-icon">
+                            <i class="fa-solid fa-file-lines"></i>
+                        </div>
+
+                        <div class="preview-document-info">
+                            <span id="previewReportType">
+                                Transaction Report
+                            </span>
+
+                            <h3 id="previewReportName">
+                                ReconAI Payment Report
+                            </h3>
+
+                            <p id="previewReportDetails">
+                                Report details
+                            </p>
+                        </div>
+
+                        <button
+                            class="download-report-button"
+                            id="downloadReportButton"
+                        >
+                            <i class="fa-solid fa-download"></i>
+                            Download Report
+                        </button>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- Report Snapshot -->
+            <section
+                class="report-snapshot-panel"
+                id="printableReport"
+            >
+
+                <div class="snapshot-heading">
+
+                    <div>
+                        <p>Live report data</p>
+                        <h3>Reconciliation Snapshot</h3>
+                    </div>
+
+                    <span id="reportGeneratedAt">
+                        Not generated yet
+                    </span>
+
+                </div>
+
+
+                <div class="snapshot-table-wrapper">
+
+                    <table class="snapshot-table">
+
+                        <thead>
+                            <tr>
+                                <th>Order</th>
+                                <th>Payment</th>
+                                <th>Customer</th>
+                                <th>Expected</th>
+                                <th>Paid</th>
+                                <th>Result</th>
+                                <th>Issue</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="reportSnapshotTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script
+    src="{{ url_for('static', filename='js/reports.js') }}"
+></script>
+
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reconciliation | ReconAI</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/reconciliation.css') }}"
+    >
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-wave-square"></i>
+            </div>
+
+            <div>
+                <h1>ReconAI</h1>
+                <span>Payment Intelligence</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <p class="menu-label">Workspace</p>
+
+            <a
+                href="{{ url_for('home') }}"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-table-cells-large"></i>
+                <span>Overview</span>
+            </a>
+
+            <a
+                href="{{ url_for('reconciliation_page') }}"
+                class="nav-item active"
+            >
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Reconciliation</span>
+            </a>
+
+            <a
+    href="{{ url_for('transactions_page') }}"
+    class="nav-item"
+>
+    <i class="fa-solid fa-money-check-dollar"></i>
+    <span>Transactions</span>
+</a>
+           <a
+    href="{{ url_for('risk_detection_page') }}"
+    class="nav-item"
+>
+    <i class="fa-solid fa-shield-halved"></i>
+    <span>Risk Detection</span>
+</a>
+            <p class="menu-label">Management</p>
+
+            <a
+    href="{{ url_for('analytics_page') }}"
+    class="nav-item"
+>
+    <i class="fa-solid fa-chart-line"></i>
+    <span>Analytics</span>
+</a>
+
+           <a
+    href="{{ url_for('reports_page') }}"
+    class="nav-item"
+>
+    <i class="fa-solid fa-file-lines"></i>
+    <span>Reports</span>
+</a>
+
+            <a href="{{ url_for('settings_page') }}" class="nav-item">
+    <i class="fa-solid fa-gear"></i>
+    <span>Settings</span>
+</a>
+
+        </nav>
+
+        <div class="sidebar-profile">
+            <div class="profile-avatar">HN</div>
+
+            <div>
+                <strong>Hadi Nizam</strong>
+                <span>Administrator</span>
+            </div>
+
+            <i class="fa-solid fa-ellipsis"></i>
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Topbar -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button class="menu-button" id="menuButton">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <p>Payment operations</p>
+                    <h2>Reconciliation Center</h2>
+                </div>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="system-status">
+                    <span></span>
+                    Engine Online
+                </div>
+
+                <div class="current-time" id="currentTime"></div>
+
+                <button class="icon-button">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <section class="reconciliation-page">
+
+            <!-- Page Heading -->
+            <div class="page-heading">
+
+                <div>
+                    <span class="page-label">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        AI-powered matching
+                    </span>
+
+                    <h1>Reconcile your payments</h1>
+
+                    <p>
+                        Upload payment records or analyse the current dataset
+                        to detect mismatches, failed payments and risk.
+                    </p>
+                </div>
+
+                <button
+                    class="primary-button"
+                    id="runPageReconciliation"
+                >
+                    <i class="fa-solid fa-bolt"></i>
+                    Run Reconciliation
+                </button>
+
+            </div>
+
+
+            <!-- Upload and Process Information -->
+            <section class="reconciliation-workspace">
+
+                <article class="upload-card">
+
+                    <div class="section-title">
+                        <div class="section-icon">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+
+                        <div>
+                            <h3>Upload transaction file</h3>
+                            <p>Import order and payment records</p>
+                        </div>
+                    </div>
+
+                    <label class="file-upload-zone" for="csvFileInput">
+
+                        <input
+                            type="file"
+                            id="csvFileInput"
+                            accept=".csv"
+                            hidden
+                        >
+
+                        <div class="upload-icon">
+                            <i class="fa-solid fa-file-csv"></i>
+                        </div>
+
+                        <strong>Drop your CSV file here</strong>
+
+                        <span>
+                            or click to browse from your computer
+                        </span>
+
+                        <small>
+                            CSV files up to 10 MB are supported
+                        </small>
+
+                    </label>
+
+                    <div class="selected-file" id="selectedFile">
+                        <i class="fa-solid fa-file-lines"></i>
+
+                        <div>
+                            <strong>No file selected</strong>
+                            <span>Choose a CSV file to begin</span>
+                        </div>
+                    </div>
+
+                </article>
+
+
+                <article class="process-card">
+
+                    <div class="section-title">
+                        <div class="section-icon purple">
+                            <i class="fa-solid fa-gears"></i>
+                        </div>
+
+                        <div>
+                            <h3>Reconciliation process</h3>
+                            <p>How ReconAI analyses each payment</p>
+                        </div>
+                    </div>
+
+                    <div class="process-list">
+
+                        <div class="process-step">
+                            <span>01</span>
+
+                            <div>
+                                <strong>Match order IDs</strong>
+                                <p>Connect payments to their original orders.</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <span>02</span>
+
+                            <div>
+                                <strong>Compare amounts</strong>
+                                <p>Detect incorrect or partial payment values.</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <span>03</span>
+
+                            <div>
+                                <strong>Analyse payment risk</strong>
+                                <p>Flag suspicious and high-risk activity.</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <span>04</span>
+
+                            <div>
+                                <strong>Generate results</strong>
+                                <p>Organise issues for review and resolution.</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- Summary -->
+            <section class="page-summary-grid">
+
+                <article class="page-summary-card">
+                    <span>Total checked</span>
+                    <strong id="pageReconTotal">0</strong>
+                    <small>Orders and payments</small>
+                </article>
+
+                <article class="page-summary-card matched">
+                    <span>Matched</span>
+                    <strong id="pageReconMatched">0</strong>
+                    <small>Successfully reconciled</small>
+                </article>
+
+                <article class="page-summary-card issue">
+                    <span>Issues found</span>
+                    <strong id="pageReconIssues">0</strong>
+                    <small>Require attention</small>
+                </article>
+
+                <article class="page-summary-card risk">
+                    <span>High risk</span>
+                    <strong id="pageReconRisk">0</strong>
+                    <small>Require verification</small>
+                </article>
+
+            </section>
+
+
+            <!-- Results -->
+            <section class="results-panel">
+
+                <div class="results-heading">
+
+                    <div>
+                        <p>Reconciliation output</p>
+                        <h3>Analysis Results</h3>
+                    </div>
+
+                    <div class="results-status" id="resultsStatus">
+                        <span></span>
+                        Ready to analyse
+                    </div>
+
+                </div>
+
+                <div class="empty-results" id="emptyResults">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i>
+
+                    <h3>No reconciliation results yet</h3>
+
+                    <p>
+                        Click “Run Reconciliation” to analyse the current
+                        payment dataset.
+                    </p>
+                </div>
+
+                <div
+                    class="page-results-table-wrapper"
+                    id="pageResultsWrapper"
+                    hidden
+                >
+
+                    <table class="page-results-table">
+
+                        <thead>
+                            <tr>
+                                <th>Order</th>
+                                <th>Payment</th>
+                                <th>Customer</th>
+                                <th>Expected</th>
+                                <th>Paid</th>
+                                <th>Result</th>
+                                <th>Issue</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="pageReconciliationTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script
+    src="{{ url_for('static', filename='js/reconciliation.js') }}"
+></script>
+
+</body>
+</html>
