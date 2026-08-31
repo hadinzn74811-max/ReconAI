@@ -1,4 +1,10 @@
-ReconAI - Razorpay Buildathon Project
+# ReconAI – Payment Intelligence Dashboard
+
+## Live Demo
+
+[Open ReconAI Live](https://recon-ai-blond.vercel.app)
+
+
 
 Folder structure:
 
